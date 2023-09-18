@@ -1,26 +1,24 @@
 pipeline {
-    agent any 
+    agent any
 
     tools {
-      
-        sonarQubeScanner 'sonarqube-scanner-latest' 
+        sonarQubeEnv 'sonarqube-scanner-latest' 
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checks out code from your GitHub repo
-                checkout scm 
+                // Checkout your code from the source code management system
+                checkout scm
             }
         }
 
-        stage('SonarQube analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Use the SonarQube environment from your configured SonarQube server
-                    withSonarQubeEnv('sq1') {
-                        // Run SonarQube scanner
-                        sh "${tool name: 'SonarScannerConfig', type: 'SonarQube Scanner'}/bin/sonar-scanner -Dsonar.projectKey=MGABE -Dsonar.sources=. -Dsonar.login=$SONARQUBE_TOKEN"
+                    def scannerHome = tool name: 'sonarqube-scanner-latest', type: 'SonarQube Scanner';
+                    withSonarQubeEnv('sonnarqube') {
+                        sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
             }
@@ -29,8 +27,13 @@ pipeline {
 
     post {
         always {
-            // This step allows Jenkins to detect the result of the analysis in SonarQube and therefore to apply the quality gate status to the build.
-            sonarQubeQualityGate '-Dsonar.login=$SONARQUBE_TOKEN' 
+            // This step is essential for the "Wait for SonarQube analysis to be completed" in a Declarative Pipeline.
+            script {
+                def qualityGate = waitForQualityGate()
+                if (qualityGate.status != 'OK' && qualityGate.status != 'WARN') {
+                    currentBuild.result = 'FAILURE'
+                }
+            }
         }
     }
 }
