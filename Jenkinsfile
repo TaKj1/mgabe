@@ -1,7 +1,7 @@
 pipeline {
     agent {
-  label 'Home-node'
-}
+        label 'Home-node'
+    }
 
     stages {
         stage('Checkout') {
@@ -14,6 +14,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
+                    // Define scannerHome using the tool
                     def scannerHome = tool name: 'sonar-tool', type: 'SonarQube Scanner';
                     withSonarQubeEnv('sonnarqube') {
                         sh "${scannerHome}/bin/sonar-scanner"
@@ -35,4 +36,3 @@ pipeline {
         }
     }
 }
-
