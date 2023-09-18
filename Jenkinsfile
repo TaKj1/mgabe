@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        sonarQubeEnv 'sonarqube-scanner-latest' 
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -16,7 +12,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool name: 'sonarqube-scanner-latest', type: 'SonarQube Scanner';
+                    def scannerHome = tool name: 'sonarqube-scanner-latestsonnarqube', type: 'SonarQube Scanner';
                     withSonarQubeEnv('sonnarqube') {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
@@ -37,3 +33,4 @@ pipeline {
         }
     }
 }
+
