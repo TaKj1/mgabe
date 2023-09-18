@@ -1,35 +1,26 @@
 pipeline {
-    agent {
-  label 'Home-node'
-}
+    agent any 
 
-
-    environment {
-       
-        SONARQUBE_PROJECT_KEY = 'MGABE'
+    tools {
+      
+        sonarQubeScanner 'sonarqube-scanner-latest' 
     }
 
     stages {
         stage('Checkout') {
             steps {
-                
-                checkout scm
+                // Checks out code from your GitHub repo
+                checkout scm 
             }
         }
 
         stage('SonarQube analysis') {
             steps {
                 script {
-                   
-                    withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
-                        withSonarQubeEnv('sq1') {
-                            sh '''
-                                sonar-scanner \
-                                -Dsonar.projectKey=${SONARQUBE_PROJECT_KEY} \
-                                -Dsonar.sources=. \
-                                -Dsonar.login=${SONARQUBE_TOKEN}
-                            '''
-                        }
+                    // Use the SonarQube environment from your configured SonarQube server
+                    withSonarQubeEnv('sq1') {
+                        // Run SonarQube scanner
+                        sh "${tool name: 'SonarScannerConfig', type: 'SonarQube Scanner'}/bin/sonar-scanner -Dsonar.projectKey=MGABE -Dsonar.sources=. -Dsonar.login=$SONARQUBE_TOKEN"
                     }
                 }
             }
@@ -38,14 +29,8 @@ pipeline {
 
     post {
         always {
-            // Publish the SonarQube results to the SonarQube server
-            script {
-                if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
-                    timeout(time: 1, unit: 'HOURS') {
-                        waitForQualityGate abortPipeline: true
-                    }
-                }
-            }
+            // This step allows Jenkins to detect the result of the analysis in SonarQube and therefore to apply the quality gate status to the build.
+            sonarQubeQualityGate '-Dsonar.login=$SONARQUBE_TOKEN' 
         }
     }
 }
