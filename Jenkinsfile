@@ -16,7 +16,7 @@ pipeline {
                 script {
                     // Define scannerHome using the tool
                     def scannerHome = tool name: 'sonar-tool', type: 'SonarQube Scanner';
-                    withSonarQubeEnv('sonnarqube') {
+                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token' {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
