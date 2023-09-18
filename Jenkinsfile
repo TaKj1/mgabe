@@ -1,5 +1,8 @@
 pipeline {
-    agent any
+    agent {
+  label 'Home-node'
+}
+
 
     environment {
        
