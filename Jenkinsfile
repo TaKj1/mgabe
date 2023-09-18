@@ -19,7 +19,7 @@ pipeline {
                 script {
                    
                     withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
-                        withSonarQubeEnv('Name of your SonarQube instance in Jenkins') {
+                        withSonarQubeEnv('sq1') {
                             sh '''
                                 sonar-scanner \
                                 -Dsonar.projectKey=${SONARQUBE_PROJECT_KEY} \
