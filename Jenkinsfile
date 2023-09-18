@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+  label 'Home-node'
+}
 
     stages {
         stage('Checkout') {
