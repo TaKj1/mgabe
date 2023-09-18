@@ -4,10 +4,9 @@ node {
     }
 
     stage('SonarQube Analysis') {
-        def scannerHome = tool name: 'sonar-tool', type: 'hudson.plugins.sonar.SonarRunnerInstallation'; 
-        // Make sure to replace 'SonarScanner' above with the name you set in Jenkins for the SonarQube Scanner tool
-        withSonarQubeEnv() {
-            sh "${scannerHome}/bin/sonar-scanner"
+        def scannerHome = tool 'SonarScanner 4.0';
+    withSonarQubeEnv('My SonarQube Server') { // If you have configured more than one global server connection, you can specify its name
+      sh "${scannerHome}/bin/sonar-scanner"
         }
     }
 }
