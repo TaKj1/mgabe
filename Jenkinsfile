@@ -1,12 +1,23 @@
-node {
+node ('Home-node'){
     stage('SCM') {
         checkout scm
     }
 
     stage('SonarQube Analysis') {
         def scannerHome = tool 'sonar-tool';
-    withSonarQubeEnv('sonnarqube') { // If you have configured more than one global server connection, you can specify its name
+    withSonarQubeEnv('sonnarqube') { 
       sh "${scannerHome}/bin/sonar-scanner"
         }
+    }
+    stage("Quality Gate"){
+        timeout(time: 240, unit: 'SECONDS'){
+            def qg = waitForQualityGate()
+            if(qg.status !="OK" && qg.status !='WARN'){
+                echo "Quality gate status: ${qg.status}"
+            }
+        }
+    }
+    stage(Deploy in Production){
+        ansiblePlaybook(playbook: '/etc/ansible/deploy_website.yml', inventory: '/etc/ansible/inventory.ini', credentialsId: 'ec2-ubuntu')
     }
 }
