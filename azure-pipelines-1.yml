@@ -1,0 +1,42 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: BuildAndTest
+  displayName: 'Build and Test'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Job'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.17.0'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install
+        npm run build
+      displayName: 'Install dependencies and build'
+
+- stage: Deploy
+  displayName: 'Deploy Stage'
+  dependsOn: BuildAndTest
+  condition: succeeded()
+  environment: 'FirstOne'
+  jobs:
+  - deployment: DeployJob
+    displayName: 'Deploy Job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              npm install
+              npm run build
+              npm start
+            displayName: 'Start the application'
