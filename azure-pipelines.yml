@@ -1,15 +1,14 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
 stages:
 - stage: BuildAndTest
   displayName: 'Build and Test'
   jobs:
   - job: BuildJob
     displayName: 'Build Job'
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - task: NodeTool@0
       inputs:
@@ -25,7 +24,7 @@ stages:
   displayName: 'Deploy Stage'
   dependsOn: BuildAndTest
   condition: succeeded()
-  environment: 'FirstOne'
+  environment: FirstOne # Proper Placement of environment
   jobs:
   - deployment: DeployJob
     displayName: 'Deploy Job'
