@@ -18,6 +18,6 @@ node ('Home-node'){
         }
     }
     stage(Deploy in Production){
-        ansiblePlaybook(playbook: '/etc/ansible/deploy_website.yml', inventory: '/etc/ansible/inventory.ini', credentialsId: 'ec2-ubuntu')
+        ansiblePlaybook(playbook: '/etc/ansible/deploy_website.yml', inventory: '/etc/ansible/inventory.ini', credentialsId: 'az-vm-ssh')
     }
 }
