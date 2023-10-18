@@ -18,6 +18,6 @@ node ('Home-node'){
         }
     }
     stage("Deploy in Cloud"){
-        ansiblePlaybook(playbook: '/etc/ansible/deploy_website.yml', inventory: '/etc/ansible/inventory.ini', credentialsId: 'az-vm-ssh')
+        ansiblePlaybook(playbook: '/etc/ansible/deploy_website.yml', inventory: '/etc/ansible/inventory.ini', credentialsId: 'azureuser')
     }
 }
