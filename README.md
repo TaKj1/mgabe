@@ -1,4 +1,4 @@
-https://dev.azure.com/rgeorgiev8891/Agile%20MGABE/_apis/build/status%2FWhiteSource%20Testing%20%26%20Publishing%20Artifacts%20to%20feed?branchName=main
+[![Build Status](https://dev.azure.com/rgeorgiev8891/Agile%20MGABE/_apis/build/status%2FWhiteSource%20Testing%20%26%20Publishing%20Artifacts%20to%20feed?branchName=main)](https://dev.azure.com/rgeorgiev8891/Agile%20MGABE/_build/latest?definitionId=20&branchName=main)
 
 # Getting Started with Create React App
 
