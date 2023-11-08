@@ -21,7 +21,7 @@ node ('Home-node') {
         }
         
       
-        withCredentials([string(credentialsId: '11ff860f-e8f6-43ac-b87a-7eabdaee8d9c', variable: 'GITLAB_TOKEN')]) {
+        withCredentials([string(credentialsId: 'ee561f6b-7ed7-4d2d-aa56-5615255383ca', variable: 'GITLAB_TOKEN')]) {
             def refName = 'main'
             def projectId = '3'
             def gitlabApiUrl = "http://192.168.1.33:9095/api/v4/projects/${projectId}/ref/${refName}/trigger/pipeline"
