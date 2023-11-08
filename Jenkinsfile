@@ -26,8 +26,9 @@ node ('Home-node'){
                     def gitlabApiUrl = "http://192.168.1.33:9095/api/v4/projects/${projectId}/ref/${refName}/trigger/pipeline"
                     sh "curl --request POST '${gitlabApiUrl}' --form 'token=${GITLAB_TOKEN}'"
                 }
-        }
-    }
+        
+            }
    
-    
+        }
+    }   
 }
