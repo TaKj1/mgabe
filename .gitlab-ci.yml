@@ -1,0 +1,9 @@
+variables:
+  DOCKER_REGISTRY: 008806742945.dkr.ecr.eu-central-1.amazonaws.com/rmrep
+  APP_NAME: rmrep
+
+publish:
+  script:
+   -docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_PIPELINE_ID .
+   -aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+   -docker push $DOCKER_REGISTRY/$APP_NAME:$CI_PIPELINE_ID
