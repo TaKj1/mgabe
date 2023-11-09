@@ -14,7 +14,7 @@ node ('Home-node') {
         stage("Quality Gate") {
             timeout(time: 1, unit: 'HOURS') {
                 def qg = waitForQualityGate() 
-                if (qg.status != 'SUCCESS' && qg.status != 'WARN') {
+                if (qg.status != 'SUCCESS' && qg.status != 'OK'&& qg.status != 'ERROR') {
                     error "Quality gate not passed: ${qg.status}"
                 }
             }
